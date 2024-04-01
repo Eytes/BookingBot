@@ -1,0 +1,31 @@
+name: Linting with Black
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      source_path:
+        required: true
+        type: string
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get backend code
+        uses: actions/checkout@v4
+
+      - name: Set up Python${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: "pip"
+
+      - name: Install black
+        run: pip install black
+
+      - name: Run black
+        run: black --check --verbose --diff --color ${{ inputs.source_path }}

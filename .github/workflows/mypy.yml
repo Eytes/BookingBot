@@ -1,0 +1,38 @@
+name: Type checking with mypy
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      source_path:
+        required: true
+        type: string
+
+jobs:
+  typing_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get backend code
+        uses: actions/checkout@v4
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: Set up Python${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: "poetry"
+
+      - name: Install dependences
+        run: |
+          cd ${{ inputs.source_path }}
+          poetry install
+
+      - name: Run mypy
+        run: |
+          cd ${{ inputs.source_path }}
+          poetry run mypy --check-untyped-defs .

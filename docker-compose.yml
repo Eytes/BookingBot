@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  backend:
+    build: ./src/backend
+
+  bot:
+    build: ./src/bot
+    depends_on: [ backend ]
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
