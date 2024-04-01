@@ -3,6 +3,6 @@ from pydantic import BaseModel
 from ..base_types import ItemId
 
 
-class UserBaseModel(BaseModel):
+class UserSchema(BaseModel):
     tg_id: ItemId
     nickname: str
