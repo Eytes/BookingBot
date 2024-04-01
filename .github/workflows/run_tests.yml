@@ -7,9 +7,10 @@ on:
       python-version:
         required: true
         type: string
-      source_path:
-        required: true
+      tests_path:
+        required: false
         type: string
+        default: './tests'
 
 jobs:
   run_tests:
@@ -29,10 +30,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ${{ inputs.source_path }}
+          cd ${{ inputs.tests_path }}
           poetry install --with dev
 
       - name: Run tests
         run: |
-          cd ${{ inputs.source_path }}
+          cd ${{ inputs.tests_path }}
           poetry run pytest .
