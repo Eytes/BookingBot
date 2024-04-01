@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
-from ..types import ObjectId
+from ..base_types import ItemId
 
 
 class UserBaseModel(BaseModel):
-    tg_id: ObjectId
+    tg_id: ItemId
     nickname: str

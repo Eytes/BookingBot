@@ -1,10 +1,10 @@
 from .interfaces import GetByIdInterface
-from ..types import ObjectId
+from ..base_types import ItemId
 
 
 class UserService(GetByIdInterface):
     def __init__(self, registry) -> None:
         self.__registry = registry
 
-    async def get_by_id(self, object_id: type[ObjectId]) -> ObjectId:
+    async def get_by_id(self, object_id: type[ItemId]) -> ItemId:
         pass

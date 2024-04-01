@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
-from ..types import ObjectId
+from ..base_types import ItemId
 
 
 class BookingFacilitiesBaseModel(BaseModel):
-    id: ObjectId
+    id: ItemId
     title: str
