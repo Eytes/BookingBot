@@ -1,11 +1,41 @@
 version: "3"
 
 services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DATABASE_NAME=${MONGO_DATABASE_NAME}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh ${MONGO_HOST}:${MONGO_PORT}/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks: [ back-tier ]
+
   backend:
+    depends_on:
+      mongo:
+        condition: service_healthy
     build: ./src/backend
+    restart: always
+    networks: [ back-tier, front-tier ]
 
   bot:
     build: ./src/bot
+    container_name: telegram_bot
+    restart: always
     depends_on: [ backend ]
     environment:
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    networks: [ front-tier ]
+
+networks:
+  back-tier:
+  front-tier:
+
