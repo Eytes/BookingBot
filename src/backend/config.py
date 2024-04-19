@@ -1,13 +1,14 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+
+from pydantic_settings import BaseSettings
 
 
 class MongoSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="mongo_")
-    username: str
-    password: str
-    host: str
-    port: int
-    database_name: str
+    username: str = os.getenv("MONGO_USERNAME")
+    password: str = os.getenv("MONGO_PASSWORD")
+    host: str = os.getenv("MONGO_HOST")
+    port: int = os.getenv("MONGO_PORT")
+    database_name: str = os.getenv("MONGO_DATABASE_NAME")
     url: str = f"mongodb+srv://{username}:{password}@{host}:{port}/{database_name}"
 
 

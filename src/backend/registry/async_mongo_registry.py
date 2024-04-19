@@ -1,4 +1,3 @@
-from abc import ABC
 from typing import Any, Mapping
 
 from motor.motor_asyncio import (
@@ -11,7 +10,7 @@ from . import mongo_helper
 from ..base_types import ItemId, Schema
 
 
-class AsyncMongoRegistry(ABC):
+class AsyncMongoRegistry:
     def __init__(self, collection: AsyncIOMotorCollection) -> None:
         self.__collection = collection
 
