@@ -1,9 +1,10 @@
+import asyncio
 from typing import Any, Mapping
 
 from motor.motor_asyncio import (
     AsyncIOMotorCollection,
-    AsyncIOMotorDatabase,
     AsyncIOMotorClientSession,
+    AsyncIOMotorDatabase,
 )
 
 from . import mongo_helper
@@ -46,7 +47,13 @@ class AsyncMongoRegistryFactory:
     def __init__(self, database: AsyncIOMotorDatabase = mongo_helper.database):
         self.__database = database
 
-    async def get_registry(self, collection_name: str) -> AsyncMongoRegistry:
-        if collection_name not in await self.__database.list_collection_names():
-            raise ValueError("Коллекции не существует")
+    def __get_collection_names(self) -> list[str]:
+        return asyncio.run(self.__database.list_collection_names())
+
+    def __check_collection_name(self, collection_name: str) -> None:
+        if collection_name not in self.__get_collection_names():
+            raise ValueError("Коллекция не существует")
+
+    def get_registry(self, collection_name: str) -> AsyncMongoRegistry:
+        self.__check_collection_name(collection_name)
         return AsyncMongoRegistry(self.__database[collection_name])

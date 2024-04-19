@@ -22,9 +22,6 @@ class MongoHelper:
             yield session
             await session.end_session()
 
-    async def get_collection_names(self) -> list[str]:
-        return await self.database.list_collection_names()
-
 
 mongo_helper = MongoHelper(
     client_url=settings.mongodb.url,
