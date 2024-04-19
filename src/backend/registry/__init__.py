@@ -1,12 +1,9 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+from .async_mongo_registry import AsyncMongoRegistryFactory
+from .mongo_helper import mongo_helper
 
-from .async_mongo_registry import AsyncMongoRegistry
-from ..config import settings
+mongo_registry_factory = AsyncMongoRegistryFactory()
 
-__mongo_client = AsyncIOMotorClient(settings.mongodb.url)
-__mongo_database = __mongo_client[settings.mongodb.database_name]
-
-UserMongoRegistry = AsyncMongoRegistry(__mongo_database["users"])
-BookingFacilitiesMongoRegistry = AsyncMongoRegistry(
-    __mongo_database["booking_facilities"]
+UserMongoRegistry = mongo_registry_factory.get_registry("users")
+BookingFacilitiesMongoRegistry = mongo_registry_factory.get_registry(
+    "booking_facilities"
 )
