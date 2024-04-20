@@ -29,7 +29,7 @@ jobs:
           cache: "pip"
 
       - name: Install flake8 and plugins
-        run: pip install flake8 flake8-bugbear
+        run: pip install flake8 flake8-bugbear flake8-pyproject
 
       - name: Flake8 linting
         run: flake8 ${{ inputs.source_path }}
