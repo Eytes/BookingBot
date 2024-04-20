@@ -28,4 +28,4 @@ jobs:
         run: pip install black
 
       - name: Run black
-        run: black --check --verbose --diff --color ${{ inputs.source_path }}
+        run: black ${{ inputs.source_path }}

@@ -35,4 +35,4 @@ jobs:
       - name: Run mypy
         run: |
           cd ${{ inputs.source_path }}
-          poetry run mypy --check-untyped-defs .
+          poetry run mypy .

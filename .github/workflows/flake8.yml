@@ -32,4 +32,4 @@ jobs:
         run: pip install flake8 flake8-bugbear
 
       - name: Flake8 linting
-        run: flake8 --statistics --show-source --max-line-length ${{ inputs.max-line-length }} ${{ inputs.source_path }}
+        run: flake8 ${{ inputs.source_path }}

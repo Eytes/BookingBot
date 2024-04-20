@@ -19,6 +19,7 @@ flake8-bugbear = "^24.2.6"
 black = "^24.3.0"
 pytest = "^8.1.1"
 mypy = "^1.9.0"
+flake8-pyproject = "^1.2.3"
 
 [build-system]
 requires = ["poetry-core"]
@@ -26,3 +27,24 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.mypy]
+disable_error_code = ["import-untyped"]
+check_untyped_defs = true
+allow_redefinition = true
+
+[tool.flake8]
+max_line_length = 88
+show_source = true
+statistics = true
+exclude = [
+    ".git",
+    "__pycache__"
+]
+
+[tool.black]
+line_length = 88
+check = true
+verbose = true
+diff = true
+color = true
