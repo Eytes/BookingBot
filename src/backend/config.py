@@ -7,7 +7,7 @@ class MongoSettings(BaseSettings):
     username: str = os.getenv("MONGO_USERNAME")
     password: str = os.getenv("MONGO_PASSWORD")
     host: str = os.getenv("MONGO_HOST")
-    port: int = int(os.getenv("MONGO_PORT"))
+    port: int = int(os.getenv("MONGO_PORT") or 27017)
     database_name: str = os.getenv("MONGO_DATABASE_NAME")
     url: str = f"mongodb+srv://{username}:{password}@{host}:{port}/{database_name}"
 

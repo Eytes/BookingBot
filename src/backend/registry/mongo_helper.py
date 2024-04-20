@@ -1,3 +1,5 @@
+from typing import AsyncGenerator
+
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorClientSession
 
 from ..config import settings
@@ -16,7 +18,7 @@ class MongoHelper:
     def database(self):
         return self.__mongo_database
 
-    async def get_session(self) -> AsyncIOMotorClientSession:
+    async def get_session(self) -> AsyncGenerator[AsyncIOMotorClientSession, None]:
         """Создается новая сессия. После окончания операций автоматически завершается"""
         async with self.client.start_session() as session:
             yield session

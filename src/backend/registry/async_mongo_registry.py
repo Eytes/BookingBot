@@ -7,7 +7,6 @@ from motor.motor_asyncio import (
     AsyncIOMotorDatabase,
 )
 
-from . import mongo_helper
 from ..base_types import ItemId, Schema
 
 
@@ -44,7 +43,7 @@ class AsyncMongoRegistry:
 
 
 class AsyncMongoRegistryFactory:
-    def __init__(self, database: AsyncIOMotorDatabase = mongo_helper.database):
+    def __init__(self, database: AsyncIOMotorDatabase):
         self.__database = database
 
     def __get_collection_names(self) -> list[str]:
