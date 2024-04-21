@@ -1,8 +1,14 @@
-from pydantic import BaseModel
-
-from ..base_types import ItemId
+from ..base_types import ItemId, Schema
 
 
-class UserSchema(BaseModel):
+class UserBaseSchema(Schema):
+    surname: str
+    name: str
+
+
+class UserSchema(Schema, UserBaseSchema):
     tg_id: ItemId
-    nickname: str
+
+
+class UserCreate(UserSchema):
+    pass
