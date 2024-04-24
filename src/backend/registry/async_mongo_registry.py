@@ -20,15 +20,15 @@ class AsyncMongoRegistry:
 
     async def create(
         self,
-        document: Schema,
+        item_data: Schema,
         session: AsyncIOMotorClientSession,
     ) -> ItemId:
         """Создание записи в БД"""
         result = await self.__collection.insert_one(
-            document=document.model_dump(),
+            document=item_data.model_dump(),
             session=session,
         )
-        return result.inserted_id
+        return ItemId(result.inserted_id)
 
     async def delete_by_id(
         self,
@@ -51,6 +51,7 @@ class AsyncMongoRegistryFactory:
 
     def __check_collection_name(self, collection_name: str) -> None:
         if collection_name not in self.__get_collection_names():
+            # TODO: создать собственное исключение отсутствия в БД коллекции
             raise ValueError("Коллекция не существует")
 
     def get_registry(self, collection_name: str) -> AsyncMongoRegistry:
