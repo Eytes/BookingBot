@@ -1,6 +1,5 @@
-from typing import TypeVar
-
 from pydantic import BaseModel
+from pydantic.types import PositiveInt
 
-ItemId = TypeVar("ItemId", bound=int)
-Schema = TypeVar("Schema", bound=BaseModel)
+ItemId = PositiveInt
+Schema = BaseModel
