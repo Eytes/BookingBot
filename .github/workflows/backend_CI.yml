@@ -33,6 +33,7 @@ jobs:
     with:
       source_path: ${{ needs.prepare_backend_path.outputs.backend_path }}
       python-version: ${{ matrix.python-version }}
+      optional_feature: '--line_length 88 --verbose --diff --color'
 
   linting_flake8:
     name: Linting with flake8 (Python${{ matrix.python-version }})

@@ -41,10 +41,3 @@ exclude = [
     ".git",
     "__pycache__"
 ]
-
-[tool.black]
-line_length = 88
-check = true
-verbose = true
-diff = true
-color = true
