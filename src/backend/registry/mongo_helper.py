@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import AsyncGenerator
 
 from motor.motor_asyncio import (
@@ -6,10 +7,17 @@ from motor.motor_asyncio import (
     AsyncIOMotorDatabase,
 )
 
+from ..base_types import T
 from ..config import settings
 
 
-class AsyncMongoHelper:
+class AsyncHelper(ABC):
+    @abstractmethod
+    async def get_session(self) -> AsyncGenerator[T, None]:
+        yield
+
+
+class AsyncMongoHelper(AsyncHelper):
     def __init__(self, client_url: str, database_name: str) -> None:
         self.__mongo_client = AsyncIOMotorClient(client_url)
         self.__mongo_database = self.__mongo_client[database_name]
@@ -24,7 +32,7 @@ class AsyncMongoHelper:
 
     async def get_session(self) -> AsyncGenerator[AsyncIOMotorClientSession, None]:
         """Создается новая сессия. После окончания операций автоматически завершается"""
-        async with self.client.start_session() as session:
+        async with await self.client.start_session() as session:
             yield session
             await session.end_session()
 
