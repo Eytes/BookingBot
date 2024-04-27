@@ -1,3 +1,7 @@
 Dockerfile*
 __pycache__
 *cache
+.dockerignore
+.idea
+.vscode
+.git
