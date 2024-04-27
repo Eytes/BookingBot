@@ -1,5 +1,4 @@
-import asyncio
-from typing import Any, Mapping
+from typing import Any
 
 from motor.motor_asyncio import (
     AsyncIOMotorCollection,
@@ -7,16 +6,20 @@ from motor.motor_asyncio import (
     AsyncIOMotorDatabase,
 )
 
+from .abstract_registry import AsyncRegistry
 from ..base_types import ItemId, Schema
 
 
-class AsyncMongoRegistry:
+class AsyncMongoRegistry(AsyncRegistry):
     def __init__(self, collection: AsyncIOMotorCollection) -> None:
         self.__collection = collection
 
-    async def get_by_id(self, item_id: ItemId) -> Mapping[str, Any] | None:
+    async def get_by_id(self, item_id: ItemId) -> list[tuple[str, Any] | None]:
         """Получить запись из БД по id"""
-        return await self.__collection.find_one({"_id": item_id})
+        item = await self.__collection.find_one({"_id": item_id})
+        if not item:
+            return list()
+        return list(item.items())
 
     async def create(
         self,
@@ -34,11 +37,15 @@ class AsyncMongoRegistry:
         self,
         item_id: ItemId,
         session: AsyncIOMotorClientSession,
-    ) -> Mapping[str, Any]:
+    ) -> list[tuple[str, Any]]:
         """Удаление записи из БД. Возвращается сама запись, которая была удалена"""
-        return await self.__collection.find_one_and_delete(
-            {"_id": item_id},
-            session=session,
+        return list(
+            (
+                await self.__collection.find_one_and_delete(
+                    {"_id": item_id},
+                    session=session,
+                )
+            ).items()
         )
 
 
@@ -46,14 +53,5 @@ class AsyncMongoRegistryFactory:
     def __init__(self, database: AsyncIOMotorDatabase):
         self.__database = database
 
-    def __get_collection_names(self) -> list[str]:
-        return asyncio.run(self.__database.list_collection_names())
-
-    def __check_collection_name(self, collection_name: str) -> None:
-        if collection_name not in self.__get_collection_names():
-            # TODO: создать собственное исключение отсутствия в БД коллекции
-            raise ValueError("Коллекция не существует")
-
     def get_registry(self, collection_name: str) -> AsyncMongoRegistry:
-        self.__check_collection_name(collection_name)
         return AsyncMongoRegistry(self.__database[collection_name])

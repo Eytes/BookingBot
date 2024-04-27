@@ -1,6 +1,7 @@
 from .async_mongo_registry import (  # noqa: F401
     AsyncMongoRegistryFactory,  # noqa: F401
     AsyncMongoRegistry,  # noqa: F401
+    AsyncRegistry,  # noqa: F401
 )
 from .mongo_helper import mongo_helper
 
