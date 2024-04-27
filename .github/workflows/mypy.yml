@@ -28,11 +28,7 @@ jobs:
           cache: "poetry"
 
       - name: Install dependences
-        run: |
-          cd ${{ inputs.source_path }}
-          poetry install
+        run: poetry install
 
       - name: Run mypy
-        run: |
-          cd ${{ inputs.source_path }}
-          poetry run mypy .
+        run: poetry run mypy ${{ inputs.source_path }}
