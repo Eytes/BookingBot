@@ -3,9 +3,9 @@ from .async_mongo_registry import (  # noqa: F401
     AsyncMongoRegistry,  # noqa: F401
     AsyncRegistry,  # noqa: F401
 )
-from .mongo_helper import mongo_helper
+from .mongo_helper import mongo_helper, AsyncDBHelper
 
-mongo_registry_factory = AsyncMongoRegistryFactory(mongo_helper.database)
+mongo_registry_factory = AsyncMongoRegistryFactory(mongo_helper.get_database())
 
 UserMongoRegistry = mongo_registry_factory.get_registry("users")
 BookingFacilitiesMongoRegistry = mongo_registry_factory.get_registry(

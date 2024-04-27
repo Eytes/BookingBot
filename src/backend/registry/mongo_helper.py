@@ -11,33 +11,32 @@ from ..base_types import T
 from ..config import settings
 
 
-class AsyncHelper(ABC):
+class AsyncDBHelper(ABC):
+
+    @abstractmethod
+    def get_database(self) -> T: ...
+
     @abstractmethod
     async def get_session(self) -> AsyncGenerator[T, None]:
         yield
 
 
-class AsyncMongoHelper(AsyncHelper):
+class AsyncMongoDBHelper(AsyncDBHelper):
     def __init__(self, client_url: str, database_name: str) -> None:
         self.__mongo_client = AsyncIOMotorClient(client_url)
         self.__mongo_database = self.__mongo_client[database_name]
 
-    @property
-    def client(self) -> AsyncIOMotorClient:
-        return self.__mongo_client
-
-    @property
-    def database(self) -> AsyncIOMotorDatabase:
+    def get_database(self) -> AsyncIOMotorDatabase:
         return self.__mongo_database
 
     async def get_session(self) -> AsyncGenerator[AsyncIOMotorClientSession, None]:
         """Создается новая сессия. После окончания операций автоматически завершается"""
-        async with await self.client.start_session() as session:
+        async with await self.__mongo_client.start_session() as session:
             yield session
             await session.end_session()
 
 
-mongo_helper = AsyncMongoHelper(
+mongo_helper = AsyncMongoDBHelper(
     client_url=settings.mongodb.url,
     database_name=settings.mongodb.database_name,
 )
