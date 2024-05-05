@@ -6,7 +6,7 @@ class UserBaseSchema(Schema):
     name: str
 
 
-class UserSchema(Schema, UserBaseSchema):
+class UserSchema(UserBaseSchema):
     tg_id: ItemId
 
 
