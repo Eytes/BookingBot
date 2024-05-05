@@ -12,3 +12,4 @@ class UserSchema(UserBaseSchema):
 
 class UserCreate(UserSchema):
     pass
+
