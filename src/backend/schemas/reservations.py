@@ -4,6 +4,8 @@ from mixins import MixinId
 from ..base_types import ItemId, Schema
 
 
+
+
 class ReservationBaseSchema(Schema):
     user_id: ItemId
     audience_id: ItemId
