@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
-from ..base_types import ItemId, BaseModel
+from pydantic import BaseModel
+
+from ..base_types import ItemId
 
 
 class GetByIdInterface(ABC):
