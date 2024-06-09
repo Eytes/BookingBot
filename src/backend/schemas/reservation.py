@@ -1,4 +1,4 @@
-from datetime import time, datetime
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -7,14 +7,16 @@ from ..base_types import ItemId
 
 
 class ReservationBaseSchema(BaseModel):
-    user_id: ItemId
-    audience_id: ItemId
-    since_time: time
-    until_time: time
-    date: datetime
+    reservation_id: ItemId
+    since_datetime: datetime
+    until_datetime: datetime
 
 
 class ReservationSchema(ReservationBaseSchema, MixinId):
+    pass
+
+
+class UpdateReservationSchema(ReservationSchema):
     pass
 
 

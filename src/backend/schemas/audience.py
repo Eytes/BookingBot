@@ -14,3 +14,7 @@ class AudienceSchema(AudienceBaseSchema, MixinId):
 
 class CreateAudienceSchema(AudienceSchema):
     pass
+
+
+class UpdateAudienceSchema(AudienceBaseSchema):
+    pass
