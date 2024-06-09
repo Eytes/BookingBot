@@ -1,17 +1,16 @@
-from datetime import time, datetime
+from pydantic import BaseModel
 
 from mixins import MixinId
-from ..base_types import ItemId, Schema
 
 
-class AudienceBaseSchema(Schema):
+class AudienceBaseSchema(BaseModel):
     capacity: int
     description: str
 
 
-class AudienceSchema(Schema, AudienceBaseSchema, MixinId):
+class AudienceSchema(AudienceBaseSchema, MixinId):
     pass
 
 
-class CreateAudienceSchema(Schema, AudienceSchema):
+class CreateAudienceSchema(AudienceSchema):
     pass
