@@ -1,6 +1,6 @@
 from pymongo.results import InsertOneResult
 
-from .mongo import mycol
+from . import audience_collection
 from ..base_types import ItemId
 from ..schemas.audience import (
     CreateAudienceSchema,
@@ -11,18 +11,22 @@ from ..schemas.audience import (
 
 class AudienceRepository:
     @classmethod
-    async def create(cls, audience: CreateAudienceSchema) -> InsertOneResult:
-        return mycol.insert_one(
-            {"capacity": audience.capacity, "description": audience.description}
+    def create(cls, audience: CreateAudienceSchema) -> InsertOneResult:
+        return audience_collection.insert_one(
+            {
+                "id": audience.id,
+                "capacity": audience.capacity,
+                "description": audience.description,
+            }
         )
 
     @classmethod
-    async def update(
+    def update(
         cls,
         audience_id: ItemId,
         new_data: UpdateAudienceSchema,
     ) -> AudienceSchema:
-        return mycol.find_one_and_update(
+        return audience_collection.find_one_and_update(
             {"id": audience_id},
             {
                 "$set": {
@@ -33,12 +37,19 @@ class AudienceRepository:
         )
 
     @classmethod
-    async def get_all(cls) -> list[AudienceSchema]:
-        return mycol.find()
+    def get_all(cls) -> list[AudienceSchema]:
+        return list(audience_collection.find())
 
     @classmethod
-    async def get_one(
+    def get_one(
         cls,
         audience_id: ItemId,
     ) -> AudienceSchema:
-        return mycol.find_one({"id": audience_id})
+        return audience_collection.find_one({"id": audience_id})
+
+    @classmethod
+    def delete_one(
+        cls,
+        reservation_id: ItemId,
+    ) -> AudienceSchema:
+        return audience_collection.find_one_and_delete({"id": reservation_id})

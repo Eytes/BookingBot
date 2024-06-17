@@ -1,6 +1,6 @@
 from pymongo.results import InsertOneResult
 
-from .mongo import mycol
+from . import reservation_collection
 from ..base_types import ItemId
 from ..schemas.reservation import (
     CreateReservationSchema,
@@ -11,39 +11,45 @@ from ..schemas.reservation import (
 
 class ReservationRepository:
     @classmethod
-    async def create(cls, reservation: CreateReservationSchema) -> InsertOneResult:
-        return mycol.insert_one(
+    def create(cls, reservation: CreateReservationSchema) -> InsertOneResult:
+        return reservation_collection.insert_one(
             {
-                "reservation_id": reservation.reservation_id,
+                "id": reservation.id,
                 "since_datetime": reservation.since_datetime,
                 "until_datetime": reservation.until_datetime,
             }
         )
 
     @classmethod
-    async def update(
+    def update(
         cls,
         reservation_id: ItemId,
         new_data: UpdateReservationSchema,
     ) -> ReservationSchema:
-        return mycol.find_one_and_update(
+        return reservation_collection.find_one_and_update(
             {"id": reservation_id},
             {
                 "$set": {
-                    "reservation_id": new_data.ItemId,
-                    "since_datetime": new_data.datetime,
-                    "until_datetime": new_data.datetime,
+                    "since_datetime": new_data.since_datetime,
+                    "until_datetime": new_data.until_datetime,
                 }
             },
         )
 
     @classmethod
-    async def get_all(cls) -> list[ReservationSchema]:
-        return mycol.find()
+    def get_all(cls) -> list[ReservationSchema]:
+        return list(reservation_collection.find())
 
     @classmethod
-    async def get_one(
+    def get_one(
         cls,
         reservation_id: ItemId,
     ) -> ReservationSchema:
-        return mycol.find_one({"id": reservation_id})
+        return reservation_collection.find_one({"id": reservation_id})
+
+    @classmethod
+    def delete_one(
+        cls,
+        reservation_id: ItemId,
+    ) -> ReservationSchema:
+        return reservation_collection.find_one_and_delete({"id": reservation_id})
