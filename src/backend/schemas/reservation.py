@@ -2,12 +2,10 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from mixins import MixinId
-from ..base_types import ItemId
+from .mixins import MixinId
 
 
 class ReservationBaseSchema(BaseModel):
-    reservation_id: ItemId
     since_datetime: datetime
     until_datetime: datetime
 

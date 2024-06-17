@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from mixins import MixinId
+from .mixins import MixinId
 
 
 class AudienceBaseSchema(BaseModel):
