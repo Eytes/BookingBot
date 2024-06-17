@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from ..base_types import ItemId
+from backend.schemas.mixins import MixinId
 
 
 class UserBaseSchema(BaseModel):
@@ -8,7 +8,7 @@ class UserBaseSchema(BaseModel):
     name: str
 
 
-class UserSchema(UserBaseSchema, ItemId):
+class UserSchema(UserBaseSchema, MixinId):
     pass
 
 
