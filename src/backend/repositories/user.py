@@ -1,6 +1,6 @@
 from pymongo.results import InsertOneResult
 
-from . import user_collection
+from . import user_collection, reservation_collection
 from ..base_types import ItemId
 from ..schemas.user import (
     CreateUserSchema,
@@ -29,6 +29,14 @@ class UserRepository:
         user_id: ItemId,
     ) -> UserSchema:
         return user_collection.find_one({"id": user_id})
+
+    @classmethod
+    def get_by_reservation(
+        cls,
+        reservation_id: ItemId,
+    ) -> UserSchema:
+        res = reservation_collection.find_one({"id": reservation_id})
+        return user_collection.find_one({"id": res.user_id})
 
     @classmethod
     def delete_one(

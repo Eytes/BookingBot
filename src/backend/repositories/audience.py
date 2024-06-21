@@ -48,6 +48,13 @@ class AudienceRepository:
         return audience_collection.find_one({"id": audience_id})
 
     @classmethod
+    def get_by_capacity(
+        cls,
+        audience_capacity: AudienceSchema.capacity,
+    ) -> list[AudienceSchema]:
+        return audience_collection.find_many({"capacity": audience_capacity})
+
+    @classmethod
     def delete_one(
         cls,
         reservation_id: ItemId,

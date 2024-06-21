@@ -48,6 +48,22 @@ class ReservationRepository:
         return reservation_collection.find_one({"id": reservation_id})
 
     @classmethod
+    def get_by_start_time(
+        cls, reservation_start_time: ReservationSchema.since_datetime
+    ) -> list[ReservationSchema]:
+        return reservation_collection.find_many(
+            {"since_datetime": reservation_start_time}
+        )
+
+    @classmethod
+    def get_by_end_time(
+        cls, reservation_end_time: ReservationSchema.since_datetime
+    ) -> list[ReservationSchema]:
+        return reservation_collection.find_many(
+            {"until_datetime": reservation_end_time}
+        )
+
+    @classmethod
     def delete_one(
         cls,
         reservation_id: ItemId,
