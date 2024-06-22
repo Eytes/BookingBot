@@ -7,3 +7,8 @@
 #                 return f"Ошибка номер {httpcode}, попробуйте заново"
 #             else:
 #                 return False
+def Not_found(res, string):
+    if res != None:
+        return res
+    else:
+        return string

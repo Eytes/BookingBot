@@ -1,5 +1,3 @@
-from pymongo.results import InsertOneResult
-
 from . import reservation_collection
 from ..base_types import ItemId
 from ..schemas.reservation import (
@@ -11,7 +9,7 @@ from ..schemas.reservation import (
 
 class ReservationRepository:
     @classmethod
-    def create(cls, reservation: CreateReservationSchema) -> InsertOneResult:
+    def create(cls, reservation: CreateReservationSchema) -> ReservationSchema:
         return reservation_collection.insert_one(
             {
                 "id": reservation.id,
@@ -69,3 +67,6 @@ class ReservationRepository:
         reservation_id: ItemId,
     ) -> ReservationSchema:
         return reservation_collection.find_one_and_delete({"id": reservation_id})
+
+
+reservation_repository = ReservationRepository

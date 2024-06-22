@@ -44,3 +44,6 @@ class UserRepository:
         reservation_id: ItemId,
     ) -> UserSchema:
         return user_collection.find_one_and_delete({"id": reservation_id})
+
+
+user_repository = UserRepository

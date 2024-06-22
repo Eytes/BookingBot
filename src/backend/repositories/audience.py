@@ -1,5 +1,3 @@
-from pymongo.results import InsertOneResult
-
 from . import audience_collection
 from ..base_types import ItemId
 from ..schemas.audience import (
@@ -11,7 +9,7 @@ from ..schemas.audience import (
 
 class AudienceRepository:
     @classmethod
-    def create(cls, audience: CreateAudienceSchema) -> InsertOneResult:
+    def create(cls, audience: CreateAudienceSchema) -> AudienceSchema:
         return audience_collection.insert_one(
             {
                 "id": audience.id,
@@ -60,3 +58,6 @@ class AudienceRepository:
         reservation_id: ItemId,
     ) -> AudienceSchema:
         return audience_collection.find_one_and_delete({"id": reservation_id})
+
+
+audience_repository = AudienceRepository
