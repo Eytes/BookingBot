@@ -7,11 +7,11 @@
 #                 return f"Ошибка номер {httpcode}, попробуйте заново"
 #             else:
 #                 return False
-def Not_found(res, string):
-    if res != None:
-        return res
+async def Not_found(res, message):
+    if await res == None:
+        return await message
     else:
-        return string
+        return await res
 
 
 audience_not_found: str = (
