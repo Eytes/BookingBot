@@ -24,6 +24,7 @@ class UserService:
             user_repository.get_one(audience_id),
             "Бронирование по этому айди не был найден",
         )
+
     async def get_by_reservation_id(self, reservation_id: ItemId) -> BaseModel or str:
         return Not_found(
             user_repository.get_by_reservation(reservation_id),
