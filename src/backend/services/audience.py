@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .catcher_of_errors import Not_found
+from .catcher_of_errors import Not_found, audience_not_found
 from ..repositories.audience import *
 from ..repositories.audience import audience_repository
 from ..schemas.audience import AudienceSchema, CreateAudienceSchema
@@ -19,23 +19,22 @@ class AudienceService:
         return audience_repository.update(Audience_id, new_data)
 
     async def get_all(self) -> BaseModel or str:
-        return Not_found(audience_repository.get_all(), "Бронирований нет")
+        return Not_found(audience_repository.get_all(), "Аудиторий нет")
 
     async def get_by_id(self, Audience_id: ItemId) -> BaseModel or str:
         return Not_found(
             audience_repository.get_one(Audience_id),
-            "Бронирование по этому айди не был найден",
+            audience_not_found,
         )
 
     async def get_by_id(self, Audience_id: ItemId) -> BaseModel or str:
         return Not_found(
             audience_repository.get_by_capacity(Audience_id),
-            "Бронирование по этому айди не был найден",
+            audience_not_found,
         )
 
     async def delete_by_id(self, Audience_id: ItemId) -> BaseModel or str:
-        res = audience_repository.delete_one(Audience_id)
         return Not_found(
             audience_repository.delete_one(Audience_id),
-            "Бронирование по этому времени не был найден",
+            audience_not_found,
         )

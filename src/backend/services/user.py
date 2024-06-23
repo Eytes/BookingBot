@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .catcher_of_errors import Not_found
+from .catcher_of_errors import Not_found, user_not_found, reservation_not_found
 from ..base_types import ItemId
 from ..repositories.user import user_repository
 from ..schemas.user import (
@@ -17,23 +17,22 @@ class UserService:
         return user_repository.create(audience)
 
     async def get_all(self) -> BaseModel or str:
-        return Not_found(user_repository.get_all(), "Бронирований нет")
+        return Not_found(user_repository.get_all(), "Пользователей нет")
 
     async def get_by_id(self, audience_id: ItemId) -> BaseModel or str:
         return Not_found(
             user_repository.get_one(audience_id),
-            "Бронирование по этому айди не был найден",
+            user_not_found,
         )
 
     async def get_by_reservation_id(self, reservation_id: ItemId) -> BaseModel or str:
         return Not_found(
             user_repository.get_by_reservation(reservation_id),
-            "Бронирование по этому айди не был найден",
+            reservation_not_found,
         )
 
     async def delete_by_id(self, audience_id: ItemId) -> BaseModel or str:
-        res = user_repository.delete_one(audience_id)
         return Not_found(
             user_repository.delete_one(audience_id),
-            "Бронирование по этому времени не был найден",
+            user_not_found,
         )
