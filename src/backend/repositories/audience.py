@@ -8,9 +8,14 @@ from ..schemas.audience import (
 
 
 class AudienceRepository:
+    """
+    Репозиторий для работы с записями о залах (парикмахерских) в базе данных.
+    """
+
     @classmethod
-    def create(cls, audience: CreateAudienceSchema) -> AudienceSchema:
-        return audience_collection.insert_one(
+    async def create(cls, audience: CreateAudienceSchema) -> AudienceSchema:
+        """Создает новую запись о зале в базе данных."""
+        return await audience_collection.insert_one(
             {
                 "id": audience.id,
                 "capacity": audience.capacity,
@@ -19,12 +24,13 @@ class AudienceRepository:
         )
 
     @classmethod
-    def update(
+    async def update(
         cls,
         audience_id: ItemId,
         new_data: UpdateAudienceSchema,
     ) -> AudienceSchema:
-        return audience_collection.find_one_and_update(
+        """Обновляет существующую запись о зале в базе данных."""
+        return await audience_collection.find_one_and_update(
             {"id": audience_id},
             {
                 "$set": {
@@ -35,29 +41,33 @@ class AudienceRepository:
         )
 
     @classmethod
-    def get_all(cls) -> list[AudienceSchema]:
-        return list(audience_collection.find())
+    async def get_all(cls) -> list[AudienceSchema]:
+        """Возвращает список всех записей о залах из базы данных."""
+        return list(await audience_collection.find())
 
     @classmethod
-    def get_one(
+    async def get_one(
         cls,
         audience_id: ItemId,
     ) -> AudienceSchema:
-        return audience_collection.find_one({"id": audience_id})
+        """Получить запись о зале из базы данных по id."""
+        return await audience_collection.find_one({"id": audience_id})
 
     @classmethod
-    def get_by_capacity(
+    async def get_by_capacity(
         cls,
         audience_capacity: AudienceSchema.capacity,
     ) -> list[AudienceSchema]:
-        return audience_collection.find_many({"capacity": audience_capacity})
+        """Возвращает список записей о залах с указанной вместимостью."""
+        return await audience_collection.find_many({"capacity": audience_capacity})
 
     @classmethod
-    def delete_one(
+    async def delete_one(
         cls,
         reservation_id: ItemId,
     ) -> AudienceSchema:
-        return audience_collection.find_one_and_delete({"id": reservation_id})
+        """Удаляет запись о зале из базы данных по id."""
+        return await audience_collection.find_one_and_delete({"id": reservation_id})
 
 
 audience_repository = AudienceRepository

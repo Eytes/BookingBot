@@ -8,9 +8,14 @@ from ..schemas.reservation import (
 
 
 class ReservationRepository:
+    """
+    Репозиторий для работы с записями о бронированиях в базе данных.
+    """
+
     @classmethod
-    def create(cls, reservation: CreateReservationSchema) -> ReservationSchema:
-        return reservation_collection.insert_one(
+    async def create(cls, reservation: CreateReservationSchema) -> ReservationSchema:
+        """Создает новую запись о бронировании в базе данных."""
+        return await reservation_collection.insert_one(
             {
                 "id": reservation.id,
                 "since_datetime": reservation.since_datetime,
@@ -19,12 +24,13 @@ class ReservationRepository:
         )
 
     @classmethod
-    def update(
+    async def update(
         cls,
         reservation_id: ItemId,
         new_data: UpdateReservationSchema,
     ) -> ReservationSchema:
-        return reservation_collection.find_one_and_update(
+        """Обновляет существующую запись о бронировании в базе данных."""
+        return await reservation_collection.find_one_and_update(
             {"id": reservation_id},
             {
                 "$set": {
@@ -35,38 +41,43 @@ class ReservationRepository:
         )
 
     @classmethod
-    def get_all(cls) -> list[ReservationSchema]:
-        return list(reservation_collection.find())
+    async def get_all(cls) -> list[ReservationSchema]:
+        """Возвращает список всех записей о бронированиях из базы данных."""
+        return list(await reservation_collection.find())
 
     @classmethod
-    def get_one(
+    async def get_one(
         cls,
         reservation_id: ItemId,
     ) -> ReservationSchema:
-        return reservation_collection.find_one({"id": reservation_id})
+        """Получить запись о бронировании из базы данных по id."""
+        return await reservation_collection.find_one({"id": reservation_id})
 
     @classmethod
-    def get_by_start_time(
+    async def get_by_start_time(
         cls, reservation_start_time: ReservationSchema.since_datetime
     ) -> list[ReservationSchema]:
-        return reservation_collection.find_many(
+        """Возвращает список записей о бронированиях, начинающихся в указанное время."""
+        return await reservation_collection.find_many(
             {"since_datetime": reservation_start_time}
         )
 
     @classmethod
-    def get_by_end_time(
+    async def get_by_end_time(
         cls, reservation_end_time: ReservationSchema.since_datetime
     ) -> list[ReservationSchema]:
-        return reservation_collection.find_many(
+        """Возвращает список записей о бронированиях, заканчивающихся в указанное время."""
+        return await reservation_collection.find_many(
             {"until_datetime": reservation_end_time}
         )
 
     @classmethod
-    def delete_one(
+    async def delete_one(
         cls,
         reservation_id: ItemId,
     ) -> ReservationSchema:
-        return reservation_collection.find_one_and_delete({"id": reservation_id})
+        """Удаляет запись о бронировании из базы данных по id."""
+        return await reservation_collection.find_one_and_delete({"id": reservation_id})
 
 
 reservation_repository = ReservationRepository
