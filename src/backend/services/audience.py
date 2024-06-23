@@ -7,34 +7,46 @@ from ..schemas.audience import AudienceSchema, CreateAudienceSchema
 
 
 class AudienceService:
-    def __init__(self, audience) -> None:
+    """
+    Сервис для работы с аудиториями.
+    """
+
+    def init(self, audience) -> None:
         self.__audience = audience
 
-    async def create(self, Audience: CreateAudienceSchema) -> AudienceSchema:
-        return audience_repository.create(Audience)
+    async def create(self, audience: CreateAudienceSchema) -> AudienceSchema:
+        """Создает новую аудиторию."""
+        return AudienceSchema.parse_obj(audience_repository.create(audience))
 
     async def update(
-        self, Audience_id: ItemId, new_data: UpdateAudienceSchema
+        self, audience_id: ItemId, new_data: UpdateAudienceSchema
     ) -> AudienceSchema:
-        return audience_repository.update(Audience_id, new_data)
+        """Обновляет существующую аудиторию."""
+        return AudienceSchema.parse_obj(
+            audience_repository.update(audience_id, new_data)
+        )
 
     async def get_all(self) -> BaseModel or str:
+        """Возвращает список всех аудиторий."""
         return Not_found(audience_repository.get_all(), "Аудиторий нет")
 
-    async def get_by_id(self, Audience_id: ItemId) -> BaseModel or str:
+    async def get_by_id(self, audience_id: ItemId) -> BaseModel or str:
+        """Возвращает аудиторию по ее ID."""
         return Not_found(
-            audience_repository.get_one(Audience_id),
+            audience_repository.get_one(audience_id),
             audience_not_found,
         )
 
-    async def get_by_id(self, Audience_id: ItemId) -> BaseModel or str:
+    async def get_by_capacity(self, audience_id: ItemId) -> BaseModel or str:
+        """Возвращает список аудиторий с указанной вместимостью."""
         return Not_found(
-            audience_repository.get_by_capacity(Audience_id),
+            audience_repository.get_by_capacity(audience_id),
             audience_not_found,
         )
 
-    async def delete_by_id(self, Audience_id: ItemId) -> BaseModel or str:
+    async def delete_by_id(self, audience_id: ItemId) -> BaseModel or str:
+        """Удаляет аудиторию по ее ID."""
         return Not_found(
-            audience_repository.delete_one(Audience_id),
+            audience_repository.delete_one(audience_id),
             audience_not_found,
         )
