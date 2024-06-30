@@ -7,11 +7,13 @@
 #                 return f"Ошибка номер {httpcode}, попробуйте заново"
 #             else:
 #                 return False
-from typing import Any
+from typing import Sequence
 
 
-def not_found(result: Any | None, message: str = "not found") -> str | Any:
-    return result if result != None else message
+def result_not_found[
+    T
+](result: T | Sequence[T] | None, message: str = "not found") -> str | T | Sequence[T]:
+    return message if result == None else result
 
 
 audience_not_found: str = (
