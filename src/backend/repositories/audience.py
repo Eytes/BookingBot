@@ -9,7 +9,7 @@ from ..schemas.audience import (
 
 class AudienceRepository:
     """
-    Репозиторий для работы с записями о залах (парикмахерских) в базе данных.
+    Репозиторий для работы с записями о залах в базе данных.
     """
 
     @classmethod
