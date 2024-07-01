@@ -1,3 +1,5 @@
+import pymongo
+
 from . import reservation_collection
 from ..base_types import ItemId
 from ..schemas.reservation import (
@@ -30,9 +32,15 @@ class ReservationRepository:
         )
 
     @classmethod
-    async def get_all(cls) -> list[ReservationSchema]:
-        """Возвращает список всех записей о бронированиях из базы данных."""
-        return list(await reservation_collection.find())
+    async def get_all(cls, start_num: int, end_num: int) -> list[ReservationSchema]:
+        """Возвращает список записей о бронированиях с какойто до какой-то из базы данных."""
+        return list(
+            await reservation_collection.find()
+            .sort("_id", pymongo.ASCENDING)
+            .skip(start_num - 1)
+            .limit(end_num - start_num)
+            .next()
+        )
 
     @classmethod
     async def get_one(
