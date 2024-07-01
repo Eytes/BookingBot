@@ -14,16 +14,10 @@ class UserRepository:
     @classmethod
     async def create(cls, user: CreateUserSchema) -> UserSchema:
         """Создает новую запись о пользователе в базе данных."""
-        return await user_collection.insert_one(
-            {
-                "id": user.id,
-                "capacity": user.capacity,
-                "description": user.description,
-            }
-        )
+        return await user_collection.insert_one(user.model_dump())
 
     @classmethod
-    async def get_all(cls) -> list[UserSchema]:
+    async def get_all(cls, start_num: int, end_num: int) -> list[UserSchema]:
         """Возвращает список всех записей о пользователях из базы данных."""
         return list(await user_collection.find())
 

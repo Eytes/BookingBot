@@ -15,13 +15,7 @@ class AudienceRepository:
     @classmethod
     async def create(cls, audience: CreateAudienceSchema) -> AudienceSchema:
         """Создает новую запись о зале в базе данных."""
-        return await audience_collection.insert_one(
-            {
-                "id": audience.id,
-                "capacity": audience.capacity,
-                "description": audience.description,
-            }
-        )
+        return await audience_collection.insert_one(audience.model_dump())
 
     @classmethod
     async def update(
@@ -32,12 +26,7 @@ class AudienceRepository:
         """Обновляет существующую запись о зале в базе данных."""
         return await audience_collection.find_one_and_update(
             {"id": audience_id},
-            {
-                "$set": {
-                    "capacity": new_data.capacity,
-                    "description": new_data.description,
-                }
-            },
+            {"$set": new_data.model_dump()},
         )
 
     @classmethod

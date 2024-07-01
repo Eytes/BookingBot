@@ -15,13 +15,7 @@ class ReservationRepository:
     @classmethod
     async def create(cls, reservation: CreateReservationSchema) -> ReservationSchema:
         """Создает новую запись о бронировании в базе данных."""
-        return await reservation_collection.insert_one(
-            {
-                "id": reservation.id,
-                "since_datetime": reservation.since_datetime,
-                "until_datetime": reservation.until_datetime,
-            }
-        )
+        return await reservation_collection.insert_one(reservation.model_dump())
 
     @classmethod
     async def update(
@@ -32,12 +26,7 @@ class ReservationRepository:
         """Обновляет существующую запись о бронировании в базе данных."""
         return await reservation_collection.find_one_and_update(
             {"id": reservation_id},
-            {
-                "$set": {
-                    "since_datetime": new_data.since_datetime,
-                    "until_datetime": new_data.until_datetime,
-                }
-            },
+            {"$set": new_data.model_dump()},
         )
 
     @classmethod
